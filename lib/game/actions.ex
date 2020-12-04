@@ -1,5 +1,14 @@
 defmodule Exmon.Game.Actions do
   alias Exmon.Game
+  alias Exmon.Game.Actions.Attack
+
+  def attack(move) do
+    case Game.turn() do
+      :player -> Attack.attack_opponent(:computer, move)
+      :computer -> Attack.attack_opponent(:player, move)
+    end
+  end
+
   def fetch_move(move) do
     Game.player()
     |> Map.get(:moves)
@@ -10,9 +19,5 @@ defmodule Exmon.Game.Actions do
     Enum.find_value(moves, {:error, move}, fn {key, value} ->
       if value == move, do: {:ok, key}
     end)
-  end
-
-  def attack(move) do
-
   end
 end
