@@ -1,8 +1,19 @@
 defmodule Exmon.Game.Status do
-  alias Exmon.Game
-  def print_round_message do
+  def print_round_message(%{status: :started} = info) do
     IO.puts("\n===== The game is started! =====\n")
-    IO.inspect(Game.info())
+    IO.inspect(info)
+    IO.puts("--------------------")
+  end
+
+  def print_round_message(%{status: :continue, turn: player} = info) do
+    IO.puts("\n===== It's #{player}'s turn. =====\n")
+    IO.inspect(info)
+    IO.puts("--------------------")
+  end
+
+  def print_round_message(%{status: :game_over} = info) do
+    IO.puts("\n===== The game is over! =====\n")
+    IO.inspect(info)
     IO.puts("--------------------")
   end
 
