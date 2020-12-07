@@ -34,4 +34,35 @@ defmodule ExmonTest do
       assert messages =~ "turn: :player"
     end
   end
+
+  describe "make_move/1" do
+    setup do
+      player = Player.build("John Doe", :soco, :chute, :cura)
+
+      capture_io(fn ->
+        Exmon.start_game(player)
+      end)
+
+      {:ok, player: player}
+    end
+
+    test "When the move is valid, do the move and the computer makes a move" do
+      messages = capture_io(fn ->
+        Exmon.make_move(:chute)
+      end)
+
+      assert messages =~ "The player attacked the computer"
+      assert messages =~ "It's computer's turn"
+      assert messages =~ "It's player's turn"
+      assert messages =~ "status: :continue"
+    end
+
+    test "When the move is invalid, returns an error message" do
+      messages = capture_io(fn ->
+        Exmon.make_move(:invalid)
+      end)
+
+      assert messages =~ "Invalid move: invalid"
+    end
+  end
 end
